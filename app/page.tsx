@@ -2,6 +2,8 @@
 
 import React, { useState } from "react";
 import {
+  Button,
+  HStack,
   VStack,
   Text,
   Center,
@@ -11,57 +13,81 @@ import {
   Box,
   Spacer,
 } from "@chakra-ui/react";
-import { InlineMath } from "react-katex";
+import { InlineMath, BlockMath } from "react-katex";
+import { MathJaxContext, MathJax } from "better-react-mathjax";
 import "katex/dist/katex.min.css";
 
 export default function Home() {
-  const [text, setText] = useState("t");
+  const [text, setText] = useState("");
 
   return (
-    <Stack
-      height="100vh"
-      width="100vw"
-      alignItems="center"
-      gap={10}
-      justifyContent="center"
-    >
-      <VStack
-        background="gray.100"
-        px={12}
-        height={150}
-        width={500}
-        rounded={6}
-        boxShadow="md"
-        alignItems="left"
+    <VStack w="100vw">
+      <Stack
+        w="full"
+        p={5}
+        pt={20}
+        gap={20}
+        alignItems="center"
+        justifyContent="center"
       >
-        <Text fontSize="xs" mt={5}>
-          1. xを求めよ。
-        </Text>
-        <Box mt={5}>
-          <InlineMath>
-            {String.raw`\int^{b}_{a}f(x)dx = \int^{c}_{a}f(x)dx + \int^{b}_{c}
+        <VStack
+          background="gray.100"
+          p={4}
+          w="full"
+          minH={140}
+          rounded={6}
+          boxShadow="md"
+          alignItems="left"
+        >
+          <Box>
+            <InlineMath>1. xを求めよ。</InlineMath>
+          </Box>
+          <Box>
+            <BlockMath>
+              {String.raw`\int^{b}_{a}f(x)dx = \int^{c}_{a}f(x)dx + \int^{b}_{c}
             f(x)dx`}
-          </InlineMath>
-        </Box>
-      </VStack>
-      <Flex
-        px={12}
-        height={30}
-        width={500}
-        borderColor="gray.200"
-        borderBottomWidth={1}
-        align="center"
+            </BlockMath>
+          </Box>
+        </VStack>
+        <Flex
+          px={4}
+          py={2}
+          w="full"
+          minH="100px"
+          borderColor="gray.200"
+          borderBottomWidth={1}
+          align="center"
+        >
+          <MathJaxContext>
+            <InlineMath>{text}</InlineMath>
+          </MathJaxContext>
+        </Flex>
+        <Input
+          mt="10px"
+          variant="outline"
+          borderColor="gray.200"
+          placeholder="input"
+          type="text"
+          onChange={(e) => setText(e.target.value)}
+        />
+      </Stack>
+      <Box mb={120} />
+      <HStack
+        h={100}
+        w="full"
+        overflowY="hidden"
+        position="fixed"
+        bottom={0}
+        px={5}
       >
-        <InlineMath>{text}</InlineMath>
-      </Flex>
-      <Input
-        w={500}
-        mt="10px"
-        placeholder="input"
-        variant="outline"
-        type="text"
-        onChange={(e) => setText(e.target.value)}
-      />
-    </Stack>
+        <Button size="md" w={40}>
+          Prev
+        </Button>
+        <Spacer />
+        <Button size="md" w={40}>
+          Next
+        </Button>
+      </HStack>
+    </VStack>
   );
 }
